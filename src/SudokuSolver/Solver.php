@@ -6,7 +6,7 @@ use RuntimeException;
 
 class Solver
 {
-    function solveSudoku(&$grid)
+    public function solveSudoku(&$grid)
     {
         $board = new Board($grid);
         $grid = $board->getGrid();

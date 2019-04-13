@@ -28,12 +28,12 @@ class Position
     /**
      * @return int
      */
-    public function getSquare()
+    public function getSquare(): int
     {
         $index = $this->y * 9 + $this->x;
 
         if (!isset(self::$squares[$index])) {
-            self::$squares[$index] = floor($this->y / 3) * 3 + floor($this->x / 3);
+            self::$squares[$index] = (int) (floor($this->y / 3) * 3 + floor($this->x / 3));
         }
 
         return self::$squares[$index];
@@ -42,7 +42,7 @@ class Position
     /**
      * @return int
      */
-    public function getX()
+    public function getX(): int
     {
         return $this->x;
     }
@@ -50,7 +50,7 @@ class Position
     /**
      * @return int
      */
-    public function getY()
+    public function getY(): int
     {
         return $this->y;
     }

@@ -66,15 +66,21 @@ class Board
             $number = $cell->getNumber();
 
             if (in_array($number, $this->columns[$x])) {
-                throw new RuntimeException("Duplicate $number in the column $x.", 1);
+                $x = $this->nth($x + 1);
+
+                throw new RuntimeException("Duplicate $number in the $x column.", 1);
             }
 
             if (in_array($number, $this->lines[$y])) {
-                throw new RuntimeException("Duplicate $number in the line $y.", 2);
+                $y = $this->nth($y + 1);
+
+                throw new RuntimeException("Duplicate $number in the $y line.", 2);
             }
 
-            if (in_array($number, $this->squares)) {
-                throw new RuntimeException("Duplicate $number in the square $square.", 3);
+            if (in_array($number, $this->squares[$square])) {
+                $square = $this->nth($square + 1);
+
+                throw new RuntimeException("Duplicate $number in the $square square.", 3);
             }
 
             $this->missing--;
@@ -238,7 +244,7 @@ class Board
     /**
      * @return bool
      */
-    function fillGrid()
+    public function fillGrid()
     {
         $oldMissing = $this->missing;
 
@@ -323,7 +329,7 @@ class Board
 
                     for ($d = 0; $d < 9; $d++) {
                         $x = $s * 3 % 9 + $d % 3;
-                        $y = floor($s / 3) * 3 + floor($d / 3);
+                        $y = (int) (floor($s / 3) * 3 + floor($d / 3));
 
                         if ($this->isPossibleValue($x, $y, $i)) {
                             $possiblePositions[] = [$x, $y];
@@ -398,5 +404,10 @@ class Board
         }
 
         return true;
+    }
+
+    protected function nth($num)
+    {
+        return [1 => '1st', 2 => '2nd'][$num] ?? "${num}th";
     }
 }
