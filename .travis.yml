@@ -1,0 +1,28 @@
+language: php
+
+cache:
+  apt: true
+  directories:
+    - $HOME/.composer/cache
+
+php:
+  - '7.1'
+  - '7.2'
+  - '7.3'
+
+before_install:
+  - if [[ $laravel = 'true' ]]; then phpenv config-rm xdebug.ini || true; fi
+  - if [[ $laravel = 'true' ]]; then echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
+  - if [[ $laravel = 'true' ]]; then printf "\n" | pecl install -f redis; fi
+  - if [[ $laravel = 'true' ]]; then travis_retry composer self-update; fi
+  - if [[ $laravel = 'true' ]]; then mysql -e 'CREATE DATABASE forge;'; fi
+  - if [[ $coverage = 'false' && $xdebug = 'true' ]]; then phpenv config-rm xdebug.ini; fi
+
+install:
+  - travis_retry composer update --prefer-dist --no-interaction --no-suggest
+
+script:
+  - ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
