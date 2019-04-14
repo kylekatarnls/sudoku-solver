@@ -22,7 +22,7 @@ install:
   - travis_retry composer update --prefer-dist --no-interaction --no-suggest
 
 script:
-  - ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
+  - travis_wait 30 ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
