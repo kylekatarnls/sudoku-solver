@@ -9,6 +9,7 @@ php:
   - '7.1'
   - '7.2'
   - '7.3'
+  - '7.4'
 
 before_install:
   - if [[ $laravel = 'true' ]]; then phpenv config-rm xdebug.ini || true; fi
